@@ -1,0 +1,6 @@
+framework module Pods_Open_ForumTests {
+  umbrella header "Pods-Open ForumTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
