@@ -27,11 +27,29 @@
                                 </connections>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Open Forum" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aKf-aS-RUC">
-                                <rect key="frame" x="8" y="336" width="398" height="50"/>
+                                <rect key="frame" x="8" y="318" width="398" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="JCh-L2-Gcn"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="36"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zpv-Yt-06V">
+                                <rect key="frame" x="8" y="284" width="398" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="6Hf-OB-hP5"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign in to continue . . ." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EPV-cI-dxU">
+                                <rect key="frame" x="8" y="384" width="398" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="T7a-uq-oMz"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -42,9 +60,17 @@
                             <constraint firstItem="WZc-mY-qQn" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="3sm-yp-Ucs"/>
                             <constraint firstItem="aKf-aS-RUC" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="4j7-N8-hEF"/>
                             <constraint firstItem="aKf-aS-RUC" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="6qc-uw-8dx"/>
+                            <constraint firstItem="EPV-cI-dxU" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="CF8-MX-XfC"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="EPV-cI-dxU" secondAttribute="trailing" constant="8" id="DAc-4A-2Mr"/>
+                            <constraint firstItem="Zpv-Yt-06V" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="IJe-qk-dhL"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="aKf-aS-RUC" secondAttribute="trailing" constant="8" id="Qmm-k5-QQe"/>
-                            <constraint firstItem="WZc-mY-qQn" firstAttribute="top" secondItem="aKf-aS-RUC" secondAttribute="bottom" constant="32" id="S5W-Sf-jLk"/>
+                            <constraint firstItem="Zpv-Yt-06V" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="aJW-TS-2Y9"/>
+                            <constraint firstItem="aKf-aS-RUC" firstAttribute="top" secondItem="Zpv-Yt-06V" secondAttribute="bottom" constant="4" id="dBX-EW-Lq0"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Zpv-Yt-06V" secondAttribute="trailing" constant="8" id="hOI-cH-oBZ"/>
+                            <constraint firstItem="WZc-mY-qQn" firstAttribute="top" secondItem="EPV-cI-dxU" secondAttribute="bottom" constant="4" id="nVu-n8-fFi"/>
+                            <constraint firstItem="EPV-cI-dxU" firstAttribute="top" secondItem="aKf-aS-RUC" secondAttribute="bottom" constant="16" id="tOA-6l-G0N"/>
                             <constraint firstItem="WZc-mY-qQn" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="w5P-Jq-A46"/>
+                            <constraint firstItem="EPV-cI-dxU" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="zoK-ZL-Wx0"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -98,6 +124,9 @@
                                                 <constraint firstAttribute="height" constant="30" id="Urz-YN-dTe"/>
                                             </constraints>
                                             <state key="normal" image="upvote"/>
+                                            <connections>
+                                                <action selector="upVotePressed:" destination="La9-SO-meE" eventType="touchUpInside" id="meQ-oS-107"/>
+                                            </connections>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No. of Upvotes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OeW-it-qeb">
                                             <rect key="frame" x="58" y="154" width="328" height="30"/>
@@ -290,6 +319,9 @@
                                                     <constraint firstAttribute="width" constant="30" id="oPP-cH-xFF"/>
                                                 </constraints>
                                                 <state key="normal" image="upvote"/>
+                                                <connections>
+                                                    <action selector="upVotePressed:" destination="0HX-2j-25Q" eventType="touchUpInside" id="11b-4t-UQr"/>
+                                                </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No. of Likes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HEn-fa-6hy">
                                                 <rect key="frame" x="46" y="462" width="360" height="30"/>

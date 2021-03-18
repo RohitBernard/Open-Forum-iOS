@@ -164,6 +164,10 @@ class PostViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     let h = self.postBody.text?.height(withConstrainedWidth: self.postBody.bounds.width, font: UIFont.systemFont(ofSize: 17))
                     self.postHeight+=h ?? 0
                     print(self.postHeight)
+                    
+                    if (postResult?.post?.voted)!{
+                        self.postUpVote.backgroundColor=UIColor.systemTeal
+                    }
 
                     
                     self.scrollView.contentSize=CGSize(width: self.innerView.bounds.width, height: self.postHeight)
@@ -176,6 +180,41 @@ class PostViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
         dataTask.resume()
     }
+    
+    @IBAction func upVotePressed(_ sender: Any) {
+        let upVote=UpVote(user_id: Int(user_id), post_id: Int(post_id))
+        
+        guard let uploadData = try? JSONEncoder().encode(upVote) else {
+            return
+        }
+        
+        let url = URL(string: "https://morning-temple-69567.herokuapp.com/votes/posts")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        //let userResult = try? JSONDecoder().decode(UserResponse.self, from: data)
+        //self.defaults.set(userResult.,forKey: "user_id")
+        
+        let task = URLSession.shared.uploadTask(with: request, from: uploadData) { data, response, error in
+            
+            if let data = data,
+                let dataString = String(data: data, encoding: .utf8) {
+                DispatchQueue.main.async {
+                    let upVoteResult = try? JSONDecoder().decode(UpVoteResponse.self, from: data)
+                    print ("got data: \(dataString)")
+                    
+                    let voteMessage=String((upVoteResult?.votes)!)+" UpVotes"
+                    self.postUpVoteCount.text=voteMessage
+                    self.postUpVote.backgroundColor=UIColor.systemTeal
+                    
+                }
+            }
+        }
+        task.resume()
+    }
+    
+    
 
 }
 

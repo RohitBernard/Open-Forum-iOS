@@ -22,12 +22,23 @@ struct PostData: Codable{
     var votes: Int?
     var created: String?
     var name: String?
+    var voted: Bool?
 }
 
 struct CommentData: Codable{
-    var title: String?
+    var com_id: Int?
     var body: String?
     var votes: Int?
     var created: String?
     var name: String?
+}
+
+struct UpVote: Codable{
+    var user_id: Int?
+    var post_id: Int?
+}
+
+struct UpVoteResponse: Codable{
+    var post_id: Int?
+    var votes: Int?
 }

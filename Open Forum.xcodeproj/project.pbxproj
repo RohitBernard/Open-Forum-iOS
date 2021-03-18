@@ -152,11 +152,11 @@
 				96D9C62125FFB28200655DDF /* CheckSignInViewController.swift */,
 				96053C8925FFCD3900A2DC5D /* AllPosts.swift */,
 				96053C9125FFCEC100A2DC5D /* Post.swift */,
+				BAAC280E2603CFE6000CEADD /* User.swift */,
 				9689E24B25FF237400384FC1 /* Main.storyboard */,
 				9689E24E25FF237800384FC1 /* Assets.xcassets */,
 				9689E25025FF237800384FC1 /* LaunchScreen.storyboard */,
 				9689E25325FF237800384FC1 /* Info.plist */,
-				BAAC280E2603CFE6000CEADD /* User.swift */,
 			);
 			path = "Open Forum";
 			sourceTree = "<group>";
