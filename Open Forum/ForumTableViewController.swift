@@ -60,6 +60,14 @@ class ForumTableViewController: UITableViewController {
         cell.postUpVoteCount.text=voteMessage
         cell.postUpVote.tag=indexPath.row
         
+        if eachPost.voted==1{
+            cell.postUpVote.setImage(UIImage(named: "upVotePressed"), for: .normal)
+        }
+        else
+        {
+            cell.postUpVote.setImage(UIImage(named: "upVoteNotPressed"), for: .normal)
+        }
+        print("\n\n\n\(cell.postTitle.text)\n\(eachPost.voted)\n\n\n")
         
         if eachPost.image==""{
             //print("\n\n\n\(cell.postTitle.text) Height=0\n\n\n")
@@ -68,7 +76,7 @@ class ForumTableViewController: UITableViewController {
             
         }
         else{
-            print("\n\n\n\(cell.postTitle.text) Height is not 0\n\n\n")
+            
             cell.noHeight.priority=UILayoutPriority(rawValue: 250)
             cell.withHeight.priority=UILayoutPriority(rawValue: 750)
             if eachPost.imageData==nil{
@@ -127,16 +135,27 @@ class ForumTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        
         if let index = tableView.indexPathForSelectedRow?.row,
            let vc = segue.destination as? PostViewController,
            segue.destination is PostViewController
         {
+            vc.mainViewController=self
+            vc.index=index
             vc.post_id=String(allPosts[index].post_id)
             if allPosts[index].image != ""{
                 vc.postImageData=allPosts[index].imageData ?? defaultImage!
             }
         }
     }
+    
+    func onUpVote(voted:Int, votes:Int, index:Int){
+        allPosts[index].voted=voted
+        allPosts[index].votes=votes
+        tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
+    }
+    
+    
     
     
     @IBAction func signOut(_ sender: Any) {
@@ -163,7 +182,7 @@ class ForumTableViewController: UITableViewController {
         
         print("getting all posts")
         let session = URLSession.shared
-        var request=URLRequest(url: URL(string: "https://morning-temple-69567.herokuapp.com/posts")!)
+        var request=URLRequest(url: URL(string: "https://morning-temple-69567.herokuapp.com/posts/log/"+user_id)!)
         request.httpMethod="GET"
         let dataTask = session.dataTask(with: request) { (data, response, _) in
             if let allPostData=data{
@@ -236,6 +255,7 @@ class ForumTableViewController: UITableViewController {
                     let upVoteResult = try? JSONDecoder().decode(UpVoteResponse.self, from: data)
                     print ("got data: \(dataString)")
                     self.allPosts[index].votes=upVoteResult?.votes ?? thisPost.votes
+                    self.allPosts[index].voted=1
                     self.tableView.reloadRows(at: [IndexPath(row: sender.tag, section: 0)], with: .none)
                     
                 }

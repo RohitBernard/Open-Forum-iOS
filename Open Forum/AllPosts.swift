@@ -17,5 +17,6 @@ struct AllPosts: Codable{
     var imageData: Data?
     var votes: Int
     var created: String
-    var voted: Bool?
+    var voted: Int?
+    var name: String
 }

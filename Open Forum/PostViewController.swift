@@ -20,6 +20,8 @@ class PostViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var currentPost:Post=Post(post: nil, comments: nil)
     let defaultImage=UIImage(named: "defaultImage")!.pngData()
     var postHeight:CGFloat=132
+    var mainViewController:ForumTableViewController?
+    var index:Int?
     
     //MARK:- Outlets
     
@@ -166,7 +168,7 @@ class PostViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     print(self.postHeight)
                     
                     if (postResult?.post?.voted)!{
-                        self.postUpVote.backgroundColor=UIColor.systemTeal
+                        self.postUpVote.setImage(UIImage(named: "upVotePressed"), for: .normal)
                     }
 
                     
@@ -206,13 +208,16 @@ class PostViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     
                     let voteMessage=String((upVoteResult?.votes)!)+" UpVotes"
                     self.postUpVoteCount.text=voteMessage
-                    self.postUpVote.backgroundColor=UIColor.systemTeal
+                    self.postUpVote.setImage(UIImage(named: "upVotePressed"), for: .normal)
+                    self.mainViewController?.onUpVote(voted: 1, votes: (upVoteResult?.votes)!, index: self.index!)
                     
                 }
             }
         }
         task.resume()
     }
+    
+    
     
     
 
