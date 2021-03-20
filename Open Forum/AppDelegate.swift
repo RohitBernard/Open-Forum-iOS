@@ -37,7 +37,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         let userId = user.userID                  // For client-side use only!
         print(userId as Any)
         //let idToken = user.authentication.idToken // Safe to send to the server
+        //user.authentication.id
         //print(idToken as Any)
+        //print("\n\n\n\(user.authentication.clientID)\n\n\n")
+        
+        //print("\n\n\n\(user.authentication.idToken)\n\n\n")
+        
         let fullName = user.profile.name
         print(fullName as Any)
         //let givenName = user.profile.givenName

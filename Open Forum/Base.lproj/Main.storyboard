@@ -78,7 +78,7 @@
             </objects>
             <point key="canvasLocation" x="2581" y="748"/>
         </scene>
-        <!--Forum Table View Controller-->
+        <!--Feed-->
         <scene sceneID="pma-fl-j6b">
             <objects>
                 <tableViewController storyboardIdentifier="ForumTableViewController" id="La9-SO-meE" customClass="ForumTableViewController" customModule="Open_Forum" customModuleProvider="target" sceneMemberID="viewController">
@@ -173,7 +173,7 @@
                             <outlet property="delegate" destination="La9-SO-meE" id="CUB-yW-7lf"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="eGc-cq-pJE">
+                    <navigationItem key="navigationItem" title="Feed" id="eGc-cq-pJE">
                         <barButtonItem key="rightBarButtonItem" title="Sign Out" id="VUL-pl-30m">
                             <connections>
                                 <action selector="signOut:" destination="La9-SO-meE" id="9fR-f1-YKH"/>
@@ -276,7 +276,7 @@
             </objects>
             <point key="canvasLocation" x="3387" y="748"/>
         </scene>
-        <!--Post View Controller-->
+        <!--Post-->
         <scene sceneID="55c-ep-wVb">
             <objects>
                 <viewController id="0HX-2j-25Q" customClass="PostViewController" customModule="Open_Forum" customModuleProvider="target" sceneMemberID="viewController">
@@ -288,7 +288,7 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="720"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x7z-0F-oHw">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="720"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="774"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading . . ." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lze-8e-Mqy">
                                                 <rect key="frame" x="8" y="8" width="398" height="32"/>
@@ -428,13 +428,13 @@
                         <viewLayoutGuide key="safeArea" id="zYB-xY-7b8"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="1zo-Gb-Thc" firstAttribute="centerX" secondItem="LXk-pb-bS1" secondAttribute="centerX" id="Dem-En-79y"/>
-                            <constraint firstItem="1zo-Gb-Thc" firstAttribute="centerY" secondItem="LXk-pb-bS1" secondAttribute="centerY" id="GAD-is-Xgn"/>
-                            <constraint firstItem="1zo-Gb-Thc" firstAttribute="top" secondItem="zYB-xY-7b8" secondAttribute="top" id="PP9-z4-gBU"/>
-                            <constraint firstItem="1zo-Gb-Thc" firstAttribute="leading" secondItem="zYB-xY-7b8" secondAttribute="leading" id="van-Lt-kjw"/>
+                            <constraint firstItem="zYB-xY-7b8" firstAttribute="bottom" secondItem="1zo-Gb-Thc" secondAttribute="bottom" id="0DD-g7-kxP"/>
+                            <constraint firstItem="1zo-Gb-Thc" firstAttribute="leading" secondItem="zYB-xY-7b8" secondAttribute="leading" id="IXc-SX-d6w"/>
+                            <constraint firstItem="1zo-Gb-Thc" firstAttribute="top" secondItem="zYB-xY-7b8" secondAttribute="top" id="f0i-QS-dzo"/>
+                            <constraint firstItem="zYB-xY-7b8" firstAttribute="trailing" secondItem="1zo-Gb-Thc" secondAttribute="trailing" id="sIF-wY-mXh"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="dr2-G2-DGL"/>
+                    <navigationItem key="navigationItem" title="Post" id="dr2-G2-DGL"/>
                     <connections>
                         <outlet property="innerView" destination="x7z-0F-oHw" id="mmJ-tU-JD3"/>
                         <outlet property="noHeight" destination="Caf-bf-AvI" id="enC-Lk-qYu"/>

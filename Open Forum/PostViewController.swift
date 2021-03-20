@@ -15,6 +15,7 @@ class PostViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var comments = [CommentData]()
     var commentHeight:CGFloat=0
     
+    var voted:Bool=false
     var post_id=""
     var postImageData:Data?=nil
     var currentPost:Post=Post(post: nil, comments: nil)
@@ -57,7 +58,7 @@ class PostViewController: UIViewController, UITableViewDataSource, UITableViewDe
         // Do any additional setup after loading the view.
     }
     
-    //MARK:- Comment Table Functions
+    //MARK:- Table View Data Source
     
     func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
@@ -90,13 +91,21 @@ class PostViewController: UIViewController, UITableViewDataSource, UITableViewDe
             thisCommentHeight+=(h ?? 0)
             commentHeight+=thisCommentHeight
             tableHeight.constant=commentHeight
+            //self.viewWillLayoutSubviews()
         }
         cell.hasBeenLoaded=true
+        print(tableView.contentSize.height)
         print("commentHeight: \(commentHeight)")
         postHeight+=thisCommentHeight
+        //postHeight+=tableView.contentSize.height
         print("postHeight: \(postHeight)")
         scrollView.contentSize=CGSize(width: innerView.bounds.width, height: postHeight)
         return cell
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.updateViewConstraints()
+        self.tableHeight.constant = self.tableView.contentSize.height
     }
     
     
@@ -112,7 +121,7 @@ class PostViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     */
     
-    // MARK: - Private Functions
+    // MARK: - API Calls
     
     private func getPost(){
         print("getting current posts")
@@ -143,6 +152,7 @@ class PostViewController: UIViewController, UITableViewDataSource, UITableViewDe
                         print("error: ", error)
                     }
                     //print(postResult as Any)
+                    self.voted=(postResult?.post?.voted)!
                     
                     self.postTitle.text=postResult?.post?.title
                     self.postBody.text=postResult?.post?.body
@@ -160,7 +170,11 @@ class PostViewController: UIViewController, UITableViewDataSource, UITableViewDe
                         self.noHeight.priority=UILayoutPriority(rawValue: 250)
                         self.withHeight.priority=UILayoutPriority(rawValue: 750)
                         self.postImage.image=UIImage(data: self.postImageData ?? self.defaultImage!)
-                        self.postHeight+=self.postImage.bounds.width
+                        
+                        let ratio=(self.postImage.image?.size.height)!/(self.postImage.image?.size.width)!
+                        self.withHeight.constant=self.postImage.bounds.width*ratio
+                        
+                        self.postHeight+=self.withHeight.constant
                     }
 
                     let h = self.postBody.text?.height(withConstrainedWidth: self.postBody.bounds.width, font: UIFont.systemFont(ofSize: 17))
@@ -169,6 +183,9 @@ class PostViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     
                     if (postResult?.post?.voted)!{
                         self.postUpVote.setImage(UIImage(named: "upVotePressed"), for: .normal)
+                    }
+                    else{
+                        self.postUpVote.setImage(UIImage(named: "upVoteNotPressed"), for: .normal)
                     }
 
                     
@@ -190,7 +207,7 @@ class PostViewController: UIViewController, UITableViewDataSource, UITableViewDe
             return
         }
         
-        let url = URL(string: "https://morning-temple-69567.herokuapp.com/votes/posts")!
+        let url = voted ? URL(string: "https://morning-temple-69567.herokuapp.com/votes/down/posts")! : URL(string: "https://morning-temple-69567.herokuapp.com/votes/posts")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -208,9 +225,16 @@ class PostViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     
                     let voteMessage=String((upVoteResult?.votes)!)+" UpVotes"
                     self.postUpVoteCount.text=voteMessage
-                    self.postUpVote.setImage(UIImage(named: "upVotePressed"), for: .normal)
-                    self.mainViewController?.onUpVote(voted: 1, votes: (upVoteResult?.votes)!, index: self.index!)
-                    
+                    if (self.voted){
+                        self.postUpVote.setImage(UIImage(named: "upVoteNotPressed"), for: .normal)
+                        self.mainViewController?.onUpVote(voted: 0, votes: (upVoteResult?.votes)!, index: self.index!)
+                    }
+                    else{
+                        self.postUpVote.setImage(UIImage(named: "upVotePressed"), for: .normal)
+                        self.mainViewController?.onUpVote(voted: 1, votes: (upVoteResult?.votes)!, index: self.index!)
+                    }
+                    self.voted = !self.voted
+                    print(self.index!)
                 }
             }
         }
@@ -222,6 +246,7 @@ class PostViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
 
 }
+//MARK:- Extensions
 
 extension String {
     func height(withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat {

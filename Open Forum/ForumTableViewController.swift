@@ -67,7 +67,7 @@ class ForumTableViewController: UITableViewController {
         {
             cell.postUpVote.setImage(UIImage(named: "upVoteNotPressed"), for: .normal)
         }
-        print("\n\n\n\(cell.postTitle.text)\n\(eachPost.voted)\n\n\n")
+        
         
         if eachPost.image==""{
             //print("\n\n\n\(cell.postTitle.text) Height=0\n\n\n")
@@ -84,9 +84,11 @@ class ForumTableViewController: UITableViewController {
                 getImage(postNo:indexPath.row)
             }
             cell.postImage.image=UIImage(data: eachPost.imageData ?? defaultImage!)
+            let ratio=(cell.postImage.image?.size.height)!/(cell.postImage.image?.size.width)!
+            cell.withHeight.constant=cell.postImage.bounds.width*ratio
             
         }
-        
+        print("\n\n\n\(cell.postTitle.text)\n\(eachPost.voted)\n\(cell.noHeight.priority)\n\n\n")
         // Configure the cell...
 
         return cell
@@ -174,7 +176,7 @@ class ForumTableViewController: UITableViewController {
         sceneDelegate.window?.rootViewController = controller
     }
     
-    //MARK: - Private Functions
+    //MARK: - API Calls
     
     private func getPosts(){
         //https://virtserver.swaggerhub.com/Suhas-C-V/OPEN_FORUM_WEB_API/1.0.0/posts
@@ -232,6 +234,7 @@ class ForumTableViewController: UITableViewController {
     @IBAction func upVotePressed(_ sender: UIButton) {
         let thisPost = allPosts[sender.tag]
         let index=sender.tag
+        let flag = thisPost.voted == 0 ? true : false
         print("Pressed \(thisPost.title)")
         let upVote=UpVote(user_id: Int(user_id), post_id: thisPost.post_id)
         
@@ -239,7 +242,7 @@ class ForumTableViewController: UITableViewController {
             return
         }
         
-        let url = URL(string: "https://morning-temple-69567.herokuapp.com/votes/posts")!
+        let url = flag ? URL(string: "https://morning-temple-69567.herokuapp.com/votes/posts")! : URL(string: "https://morning-temple-69567.herokuapp.com/votes/down/posts")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -255,8 +258,8 @@ class ForumTableViewController: UITableViewController {
                     let upVoteResult = try? JSONDecoder().decode(UpVoteResponse.self, from: data)
                     print ("got data: \(dataString)")
                     self.allPosts[index].votes=upVoteResult?.votes ?? thisPost.votes
-                    self.allPosts[index].voted=1
-                    self.tableView.reloadRows(at: [IndexPath(row: sender.tag, section: 0)], with: .none)
+                    self.allPosts[index].voted = flag ? 1 : 0
+                    self.tableView.reloadRows(at: [IndexPath(row: sender.tag, section: 0)], with: .automatic)
                     
                 }
             }
