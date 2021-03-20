@@ -39,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         //let idToken = user.authentication.idToken // Safe to send to the server
         //user.authentication.id
         //print(idToken as Any)
-        //print("\n\n\n\(user.authentication.clientID)\n\n\n")
+        print("\n\n\n\(user.authentication.clientID)\n\n\n")
         
         //print("\n\n\n\(user.authentication.idToken)\n\n\n")
         

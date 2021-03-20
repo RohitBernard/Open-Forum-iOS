@@ -21,6 +21,7 @@ class ForumTableViewController: UITableViewController {
         
         self.refreshControl?.addTarget(self, action: #selector(getPosts), for: UIControl.Event.valueChanged)
         
+        while (defaults.value(forKey: "user_id")==nil){}
         if let u=defaults.value(forKey: "user_id") as? Int {
             user_id=String(u)
             print("fetched saved data")
