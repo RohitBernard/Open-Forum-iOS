@@ -19,6 +19,8 @@ class ForumTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.refreshControl?.addTarget(self, action: #selector(getPosts), for: UIControl.Event.valueChanged)
+        
         if let u=defaults.value(forKey: "user_id") as? Int {
             user_id=String(u)
             print("fetched saved data")
@@ -26,7 +28,6 @@ class ForumTableViewController: UITableViewController {
         else{
             print("oops")
         }
-
         getPosts()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -147,6 +148,7 @@ class ForumTableViewController: UITableViewController {
             vc.post_id=String(allPosts[index].post_id)
             if allPosts[index].image != ""{
                 vc.postImageData=allPosts[index].imageData ?? defaultImage!
+                
             }
         }
     }
@@ -178,10 +180,10 @@ class ForumTableViewController: UITableViewController {
     
     //MARK: - API Calls
     
-    private func getPosts(){
+    @objc private func getPosts(){
         //https://virtserver.swaggerhub.com/Suhas-C-V/OPEN_FORUM_WEB_API/1.0.0/posts
         //https://floating-ridge-28249.herokuapp.com/posts
-        
+        allPosts.removeAll()
         print("getting all posts")
         let session = URLSession.shared
         var request=URLRequest(url: URL(string: "https://morning-temple-69567.herokuapp.com/posts/log/"+user_id)!)
@@ -195,6 +197,7 @@ class ForumTableViewController: UITableViewController {
                     allPostResult?.forEach{self.allPosts.append($0)}
                     print(self.allPosts)
                     self.tableView.reloadData()
+                    self.refreshControl?.endRefreshing()
                 }
             }
         }
@@ -205,7 +208,6 @@ class ForumTableViewController: UITableViewController {
         //https://virtserver.swaggerhub.com/Suhas-C-V/OPEN_FORUM_WEB_API/1.0.0/posts
         //https://floating-ridge-28249.herokuapp.com/posts
         //https://floating-ridge-28249.herokuapp.com/images/uploads
-        
         print("getting image")
         let session = URLSession.shared
         let imgurl="https://morning-temple-69567.herokuapp.com/images/uploads/"+self.allPosts[postNo].image
