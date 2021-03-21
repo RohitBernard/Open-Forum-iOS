@@ -39,4 +39,4 @@ The API Documentation can be found [here](https://app.swaggerhub.com/apis-docs/S
 ## Other Repos
 
 * The Backend repo can be found [here]()
-* The Frontend repo can be found [here]()
+* The Frontend repo can be found [here](https://github.com/Akhila-Bhupathi/open-forum-project)
