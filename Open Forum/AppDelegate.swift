@@ -61,15 +61,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         
         let url = URL(string: "https://morning-temple-69567.herokuapp.com/auth/login")!
         var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "GET"
+        //request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue(("Bearer "+user.authentication.idToken), forHTTPHeaderField: "Authorization")
         //print(("Bearer "+user.authentication.idToken))
         //let userResult = try? JSONDecoder().decode(UserResponse.self, from: data)
         //self.defaults.set(userResult.,forKey: "user_id")
         
-        let task = URLSession.shared.uploadTask(with: request, from: uploadData) { data, response, error in
-            
+        //let task = URLSession.shared.uploadTask(with: request, from: uploadData) { data, response, error in
+        let task = URLSession.shared.dataTask(with: request) { (data, response, _) in
             if let data = data,
                 let dataString = String(data: data, encoding: .utf8) {
                 let userResult = try? JSONDecoder().decode(UserResponse.self, from: data)
