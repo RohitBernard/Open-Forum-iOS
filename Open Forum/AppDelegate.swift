@@ -41,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         //print(idToken as Any)
         print("\n\n\n\(user.authentication.clientID)\n\n\n")
         
-        //print("\n\n\n\(user.authentication.idToken)\n\n\n")
+        print("\n\n\n\(user.authentication.idToken)\n\n\n")
         
         let fullName = user.profile.name
         print(fullName as Any)
@@ -63,7 +63,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
+        request.setValue(("Bearer "+user.authentication.idToken), forHTTPHeaderField: "Authorization")
+        //print(("Bearer "+user.authentication.idToken))
         //let userResult = try? JSONDecoder().decode(UserResponse.self, from: data)
         //self.defaults.set(userResult.,forKey: "user_id")
         
@@ -73,7 +74,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
                 let dataString = String(data: data, encoding: .utf8) {
                 let userResult = try? JSONDecoder().decode(UserResponse.self, from: data)
                 self.defaults.set(userResult?.user_id,forKey: "user_id")
-                print ("got data: \(dataString)")
+                self.defaults.set(user.authentication.idToken,forKey: "token")
+                print ("got data: \(dataString) //end of data//")
+                print ("raw data: \(data)")
             }
         }
         task.resume()

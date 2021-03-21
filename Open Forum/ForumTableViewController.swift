@@ -12,6 +12,7 @@ class ForumTableViewController: UITableViewController {
     
     
     let defaults = UserDefaults.standard
+    var token=""
     var user_id=""
     var allPosts=[AllPosts]()
     let defaultImage=UIImage(named: "defaultImage")!.pngData()
@@ -21,10 +22,12 @@ class ForumTableViewController: UITableViewController {
         
         self.refreshControl?.addTarget(self, action: #selector(getPosts), for: UIControl.Event.valueChanged)
         
-        while (defaults.value(forKey: "user_id")==nil){}
-        if let u=defaults.value(forKey: "user_id") as? Int {
+        while (defaults.value(forKey: "user_id")==nil || defaults.value(forKey: "token")==nil){}
+        if let u=defaults.value(forKey: "user_id") as? Int ,
+           let t=defaults.value(forKey: "token") as? String {
+            token=t
             user_id=String(u)
-            print("fetched saved data")
+            print("fetched saved data\n\(token)\n\(user_id)")
         }
         else{
             print("oops")
@@ -188,10 +191,13 @@ class ForumTableViewController: UITableViewController {
         print("getting all posts")
         let session = URLSession.shared
         var request=URLRequest(url: URL(string: "https://morning-temple-69567.herokuapp.com/posts/log/"+user_id)!)
+        request.setValue(("Bearer "+token), forHTTPHeaderField: "Authorization")
         request.httpMethod="GET"
         let dataTask = session.dataTask(with: request) { (data, response, _) in
             if let allPostData=data{
                 DispatchQueue.main.async {
+                    let dataString = String(data: allPostData, encoding: .utf8)
+                    print ("got data: \(dataString) //end of data//")
                     print(allPostData)
                     let allPostResult = try? JSONDecoder().decode([AllPosts].self, from: allPostData)
                     print(allPostResult as Any)
@@ -213,14 +219,17 @@ class ForumTableViewController: UITableViewController {
         let session = URLSession.shared
         let imgurl="https://morning-temple-69567.herokuapp.com/images/uploads/"+self.allPosts[postNo].image
         var request=URLRequest(url: URL(string: imgurl)!)
+        request.setValue(("Bearer "+token), forHTTPHeaderField: "Authorization")
         request.httpMethod="GET"
         let dataTask = session.dataTask(with: request) { (data, response, _) in
             if let imageData=data{
                 DispatchQueue.main.async {
                     print(imageData)
-                    self.allPosts[postNo].imageData=imageData
+                    if response?.mimeType!.split(separator: "/")[0] == "image"{
+                        self.allPosts[postNo].imageData=imageData
                     
-                    self.tableView.reloadRows(at: [IndexPath(row: postNo, section: 0)], with: .automatic)
+                        self.tableView.reloadRows(at: [IndexPath(row: postNo, section: 0)], with: .automatic)
+                    }
                 }
             }
         }
@@ -247,6 +256,7 @@ class ForumTableViewController: UITableViewController {
         
         let url = flag ? URL(string: "https://morning-temple-69567.herokuapp.com/votes/posts")! : URL(string: "https://morning-temple-69567.herokuapp.com/votes/down/posts")!
         var request = URLRequest(url: url)
+        request.setValue(("Bearer "+token), forHTTPHeaderField: "Authorization")
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         

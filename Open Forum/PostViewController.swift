@@ -11,6 +11,7 @@ class PostViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     let defaults = UserDefaults.standard
     var user_id=""
+    var token=""
     //var comments = [UIView]()
     var comments = [CommentData]()
     var commentHeight:CGFloat=0
@@ -46,8 +47,10 @@ class PostViewController: UIViewController, UITableViewDataSource, UITableViewDe
         tableView.delegate = self
         tableView.dataSource = self
         
-        if let u=defaults.value(forKey: "user_id") as? Int {
+        if let u=defaults.value(forKey: "user_id") as? Int,
+           let t=defaults.value(forKey: "token") as? String{
             user_id=String(u)
+            token=t
             print("fetched saved data")
         }
         else{
@@ -84,22 +87,25 @@ class PostViewController: UIViewController, UITableViewDataSource, UITableViewDe
         cell.commenterName.text=eachComment.name
         cell.commentBody.text=eachComment.body
         
-        var thisCommentHeight:CGFloat=0
-        if(!cell.hasBeenLoaded){
-            let h=cell.commentBody.text?.height(withConstrainedWidth: cell.commentBody.bounds.width, font: UIFont.systemFont(ofSize: 17))
-            thisCommentHeight+=33
-            thisCommentHeight+=(h ?? 0)
-            commentHeight+=thisCommentHeight
-            tableHeight.constant=commentHeight
-            //self.viewWillLayoutSubviews()
-        }
-        cell.hasBeenLoaded=true
-        print(tableView.contentSize.height)
-        print("commentHeight: \(commentHeight)")
-        postHeight+=thisCommentHeight
+//        var thisCommentHeight:CGFloat=0
+//        if(!cell.hasBeenLoaded){
+//            let h=cell.commentBody.text?.height(withConstrainedWidth: cell.commentBody.bounds.width, font: UIFont.systemFont(ofSize: 17))
+//            thisCommentHeight+=33
+//            thisCommentHeight+=(h ?? 0)
+//            commentHeight+=thisCommentHeight
+//            tableHeight.constant=commentHeight
+//            //self.viewWillLayoutSubviews()
+//        }
+//        cell.hasBeenLoaded=true
+        tableView.layoutIfNeeded()
+        print("tableView height: \(tableView.contentSize.height)")
+        tableHeight.constant=tableView.contentSize.height
+        //commentHeight=tableView.contentSize.height-commentHeight
+        //print("commentHeight: \(commentHeight)")
+        //postHeight+=commentHeight
         //postHeight+=tableView.contentSize.height
         print("postHeight: \(postHeight)")
-        scrollView.contentSize=CGSize(width: innerView.bounds.width, height: postHeight)
+        scrollView.contentSize=CGSize(width: innerView.bounds.width, height: postHeight+tableView.contentSize.height+8)
         return cell
     }
     
@@ -129,6 +135,7 @@ class PostViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let session = URLSession.shared
         var request=URLRequest(url: URL(string: "https://morning-temple-69567.herokuapp.com/posts/"+post_id+"/"+user_id)!)
         request.httpMethod="GET"
+        request.setValue(("Bearer "+token), forHTTPHeaderField: "Authorization")
         let dataTask = session.dataTask(with: request) { (data, response, _) in
             if let postData=data{
                 DispatchQueue.main.async {
@@ -210,6 +217,7 @@ class PostViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let url = voted ? URL(string: "https://morning-temple-69567.herokuapp.com/votes/down/posts")! : URL(string: "https://morning-temple-69567.herokuapp.com/votes/posts")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
+        request.setValue(("Bearer "+token), forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         //let userResult = try? JSONDecoder().decode(UserResponse.self, from: data)
