@@ -24,6 +24,8 @@ Project plan can be found [here](https://docs.google.com/spreadsheets/d/1SKJNLOZ
 
 ## ER Diagram
 
+![ER Diagram](Open-Forum_ER-Diagram.jpeg)
+
 ## API Documentation
 
 The API Documentation can be found [here](https://app.swaggerhub.com/apis-docs/Suhas-C-V/OPEN_FORUM_WEB_API/1.0.0#/)
@@ -42,5 +44,5 @@ The Open Forum platform also has a [Web application](https://open-forum-project.
 
 ## Other Repos
 
-* The Backend repo can be found [here]()
+* The Backend repo can be found [here](https://github.com/Suhas-C-V/Open-Forum-WebApp)
 * The Frontend repo can be found [here](https://github.com/Akhila-Bhupathi/open-forum-project)
