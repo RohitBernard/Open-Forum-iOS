@@ -36,6 +36,10 @@ The API Documentation can be found [here](https://app.swaggerhub.com/apis-docs/S
 4. MySQL
 5. Heroku
 
+## Web App
+
+The Open Forum platform also has a [Web application](https://open-forum-project.herokuapp.com/), which allows users to create, browse, upvote, and comment on posts, and also provides a leaderboard and badges for user's based on their activity.
+
 ## Other Repos
 
 * The Backend repo can be found [here]()
