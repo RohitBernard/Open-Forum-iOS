@@ -10,10 +10,12 @@ import GoogleSignIn
 
 class SignInViewController: UIViewController {
 
+    let defaults = UserDefaults.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-            
+        defaults.removeObject(forKey: "token")
         GIDSignIn.sharedInstance()?.presentingViewController = self
         
         GIDSignIn.sharedInstance()?.restorePreviousSignIn()

@@ -54,10 +54,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         let thumbnail = user.profile.imageURL(withDimension: 256)
         print(thumbnail)
         
-        let currentUser=User(google_id: userId, name: fullName, email: userEmail, tumbnail: thumbnail?.absoluteString)
-        guard let uploadData = try? JSONEncoder().encode(currentUser) else {
-            return
-        }
+        //let currentUser=User(google_id: userId, name: fullName, email: userEmail, tumbnail: thumbnail?.absoluteString)
+        //guard let uploadData = try? JSONEncoder().encode(currentUser) else {
+        //    return
+        //}
         
         let url = URL(string: "https://morning-temple-69567.herokuapp.com/auth/login")!
         var request = URLRequest(url: url)
