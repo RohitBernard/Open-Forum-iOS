@@ -10,7 +10,7 @@ import GoogleSignIn
 
 class ForumTableViewController: UITableViewController {
     
-    
+    let alert = UIAlertController(title: "Oops! Something's gone wrong", message: "Please press the home button and restart the app", preferredStyle: .alert)
     let defaults = UserDefaults.standard
     var token=""
     var user_id=""
@@ -62,7 +62,7 @@ class ForumTableViewController: UITableViewController {
         let eachPost=allPosts[indexPath.row]
 
         cell.postTitle.text=eachPost.title
-        cell.postBody.text=eachPost.body
+        cell.postBody.text=eachPost.overview
         let voteMessage=String(eachPost.votes)+" UpVotes"
         cell.postUpVoteCount.text=voteMessage
         cell.postUpVote.tag=indexPath.row
@@ -189,7 +189,7 @@ class ForumTableViewController: UITableViewController {
     @objc private func getPosts(){
         //https://virtserver.swaggerhub.com/Suhas-C-V/OPEN_FORUM_WEB_API/1.0.0/posts
         //https://floating-ridge-28249.herokuapp.com/posts
-        allPosts.removeAll()
+        
         print("getting all posts")
         let session = URLSession.shared
         var request=URLRequest(url: URL(string: "https://morning-temple-69567.herokuapp.com/posts/log/"+user_id)!)
@@ -203,11 +203,16 @@ class ForumTableViewController: UITableViewController {
                     print(allPostData)
                     let allPostResult = try? JSONDecoder().decode([AllPosts].self, from: allPostData)
                     print(allPostResult as Any)
+                    self.allPosts.removeAll()
                     allPostResult?.forEach{self.allPosts.append($0)}
-                    print(self.allPosts)
+                    //self.allPosts.removeFirst(post_count)
+                    print("Number of posts = \(self.allPosts.count)")
                     self.tableView.reloadData()
                     self.refreshControl?.endRefreshing()
                 }
+            }
+            else{
+                self.present(self.alert, animated: true)
             }
         }
         dataTask.resume()
@@ -233,6 +238,9 @@ class ForumTableViewController: UITableViewController {
                         self.tableView.reloadRows(at: [IndexPath(row: postNo, section: 0)], with: .automatic)
                     }
                 }
+            }
+            else{
+                self.present(self.alert, animated: true)
             }
         }
         dataTask.resume()
@@ -277,6 +285,9 @@ class ForumTableViewController: UITableViewController {
                     self.tableView.reloadRows(at: [IndexPath(row: sender.tag, section: 0)], with: .automatic)
                     
                 }
+            }
+            else{
+                self.present(self.alert, animated: true)
             }
         }
         task.resume()

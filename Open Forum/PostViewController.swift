@@ -9,6 +9,7 @@ import UIKit
 
 class PostViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
+    let alert = UIAlertController(title: "Oops! Something's gone wrong", message: "Please press the home button and restart the app", preferredStyle: .alert)
     let defaults = UserDefaults.standard
     var user_id=""
     var token=""
@@ -21,7 +22,7 @@ class PostViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var postImageData:Data?=nil
     var currentPost:Post=Post(post: nil, comments: nil)
     let defaultImage=UIImage(named: "defaultImage")!.pngData()
-    var postHeight:CGFloat=132
+    var postHeight:CGFloat=100
     var mainViewController:ForumTableViewController?
     var index:Int?
     
@@ -184,8 +185,10 @@ class PostViewController: UIViewController, UITableViewDataSource, UITableViewDe
                         self.postHeight+=self.withHeight.constant
                     }
 
-                    let h = self.postBody.text?.height(withConstrainedWidth: self.postBody.bounds.width, font: UIFont.systemFont(ofSize: 17))
-                    self.postHeight+=h ?? 0
+                    let h_body = self.postBody.text?.height(withConstrainedWidth: self.postBody.bounds.width, font: UIFont.systemFont(ofSize: 17))
+                    let h_title = self.postTitle.text?.height(withConstrainedWidth: self.postTitle.bounds.width, font: UIFont.systemFont(ofSize: 26, weight: UIFont.Weight.semibold))
+                    self.postHeight+=h_body ?? 0
+                    self.postHeight+=h_title ?? 0
                     print(self.postHeight)
                     
                     if (postResult?.post?.voted)!{
@@ -202,6 +205,9 @@ class PostViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     print("\n\n\n\(self.comments)\n\n\n")
                     self.tableView.reloadData()
                 }
+            }
+            else{
+                self.present(self.alert, animated: true)
             }
         }
         dataTask.resume()
@@ -244,6 +250,9 @@ class PostViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     self.voted = !self.voted
                     print(self.index!)
                 }
+            }
+            else{
+                self.present(self.alert, animated: true)
             }
         }
         task.resume()
